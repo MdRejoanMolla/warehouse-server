@@ -9,7 +9,7 @@ require('dotenv').config();
 // DYbfZeKy2RiQ9nv3
 
 
-const uri = "mongodb+srv://userdb1:DYbfZeKy2RiQ9nv3@cluster0.mpwi2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = `mongodb+srv:// ${process.env.DB_USER}:${process.env.DB_pass}@cluster0.mpwi2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 client.connect(err => {
       const collection = client.db("test").collection("devices");
@@ -28,5 +28,5 @@ app.use(cors());
 app.use(express.json());
 
 app.listen(port, () => {
-      console.log('card server is running')
+      console.log('card server is running', port);
 })
