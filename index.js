@@ -30,6 +30,14 @@ run().catch(console.dir)
 app.get("/", (req, res) => {
       res.send('running my node crud server')
 })
+
+app.post('/manageItem', async (req, res) => {
+      const newItem = req.body;
+      const result = await itemCollection.insertOne(newItem);
+      res.send(result);
+})
+
+
 app.use(cors());
 app.use(express.json());
 
