@@ -5,22 +5,28 @@ const port = process.env.PORT || 5000;
 const cors = require('cors');
 require('dotenv').config();
 
-// userdb1
-// DYbfZeKy2RiQ9nv3
 
-
-const uri = `mongodb+srv:// ${process.env.DB_USER}:${process.env.DB_pass}@cluster0.mpwi2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mpwi2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-      const collection = client.db("test").collection("devices");
-      // perform actions on the collection object
-      console.log('bd connected')
-      client.close();
-});
+async function run() {
+      try {
+            await client.connect();
+            const itemCollection = client.db("bike-warehouse").collection("manage-items");
+            app.get('/manageItem', async (req, res) => {
+                  const query = {};
+                  const cursor = itemCollection.find(query);
+                  const manages = await cursor.toArray();
+                  res.send(manages);
+            })
 
+      }
+      finally {
 
+      }
 
+}
 
+run().catch(console.dir)
 app.get("/", (req, res) => {
       res.send('running my node crud server')
 })
