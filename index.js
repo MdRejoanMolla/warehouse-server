@@ -12,11 +12,25 @@ async function run() {
       try {
             await client.connect();
             const itemCollection = client.db("bike-warehouse").collection("manage-items");
+
             app.get('/manageItem', async (req, res) => {
                   const query = {};
                   const cursor = itemCollection.find(query);
                   const manages = await cursor.toArray();
                   res.send(manages);
+            })
+
+            app.post('/manageItem', async (req, res) => {
+                  const newItem = req.body;
+                  const result = await itemCollection.insertOne(newItem);
+                  res.send(result);
+            })
+
+            app.get('/manageItem/:id', async (req, res) => {
+                  const id = req.params.id;
+                  const query = { _id: Object(id) }
+                  const item = await itemCollection.findOne(query);
+                  res.send(iten)
             })
 
       }
@@ -31,11 +45,7 @@ app.get("/", (req, res) => {
       res.send('running my node crud server')
 })
 
-app.post('/manageItem', async (req, res) => {
-      const newItem = req.body;
-      const result = await itemCollection.insertOne(newItem);
-      res.send(result);
-})
+
 
 
 app.use(cors());
