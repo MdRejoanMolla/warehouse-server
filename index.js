@@ -33,12 +33,20 @@ async function run() {
                   res.send(item)
             })
             // delete
-            app.delete('//manageItem/:id', async (req, res) => {
+            app.delete('/manageItem/:id', async (req, res) => {
                   const id = req.params.id;
                   const query = { _id: ObjectId(id) };
                   const result = await itemCollection.deleteOne(query);
                   res.send(result);
             })
+            // update
+            app.delete('/manageItem/:id', async (req, res) => {
+                  const id = req.params.id;
+                  const query = { _id: ObjectId(id) };
+                  const result = await itemCollection.updateOne(query);
+                  res.send(result);
+            })
+
 
       }
       finally {
