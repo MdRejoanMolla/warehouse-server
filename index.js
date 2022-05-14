@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 const cors = require('cors');
@@ -28,9 +28,16 @@ async function run() {
 
             app.get('/manageItem/:id', async (req, res) => {
                   const id = req.params.id;
-                  const query = { _id: Object(id) }
+                  const query = { _id: ObjectId(id) }
                   const item = await itemCollection.findOne(query);
-                  res.send(iten)
+                  res.send(item)
+            })
+            // delete
+            app.delete('//manageItem/:id', async (req, res) => {
+                  const id = req.params.id;
+                  const query = { _id: ObjectId(id) };
+                  const result = await itemCollection.deleteOne(query);
+                  res.send(result);
             })
 
       }
