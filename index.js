@@ -1,6 +1,7 @@
 const express = require("express");
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
+const jwt = require('jsonwebtoken')
 const port = process.env.PORT || 5000;
 const cors = require('cors');
 require('dotenv').config();
@@ -13,13 +14,21 @@ async function run() {
             await client.connect();
             const itemCollection = client.db("bike-warehouse").collection("manage-items");
 
+            app.post('/login', async (req, res) => {
+                  const user = req.body;
+                  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+                        expiresIn: '1d'
+                  });
+                  res.send({ accessToken });
+            })
+
             app.get('/manageItem', async (req, res) => {
                   const query = {};
                   const cursor = itemCollection.find(query);
                   const manages = await cursor.toArray();
                   res.send(manages);
             })
-            app.get('/myItem', async (req, res) => {
+            app.get('/manageItem', async (req, res) => {
                   const email = res.query.email;
 
                   const query = { email: email };
