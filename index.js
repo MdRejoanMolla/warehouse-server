@@ -19,10 +19,23 @@ async function run() {
                   const manages = await cursor.toArray();
                   res.send(manages);
             })
+            app.get('/myItem', async (req, res) => {
+                  const email = res.query.email;
+
+                  const query = { email: email };
+                  const cursor = itemCollection.find(query);
+                  const myItem = await cursor.toArray();
+                  res.send(myItem);
+            })
 
             app.post('/manageItem', async (req, res) => {
                   const newItem = req.body;
                   const result = await itemCollection.insertOne(newItem);
+                  res.send(result);
+            })
+            app.post('/manageItem', async (req, res) => {
+                  const newItem = req.body;
+                  const result = await itemCollection.updateOne(newItem);
                   res.send(result);
             })
 
@@ -32,6 +45,7 @@ async function run() {
                   const item = await itemCollection.findOne(query);
                   res.send(item)
             })
+
             // delete
             app.delete('/manageItem/:id', async (req, res) => {
                   const id = req.params.id;
@@ -39,13 +53,7 @@ async function run() {
                   const result = await itemCollection.deleteOne(query);
                   res.send(result);
             })
-            // update
-            app.delete('/manageItem/:id', async (req, res) => {
-                  const id = req.params.id;
-                  const query = { _id: ObjectId(id) };
-                  const result = await itemCollection.updateOne(query);
-                  res.send(result);
-            })
+
 
 
       }
